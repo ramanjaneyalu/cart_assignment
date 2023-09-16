@@ -1,7 +1,6 @@
 import os
 import secrets
-
-import pymysql
+import sqlalchemy.dialects.postgresql
 from flask import Flask, flash
 from flask import render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -11,16 +10,7 @@ from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 
-POSTGRES_HOST = os.getenv('POSTGRES_HOST')
-POSTGRES_USER = os.getenv('POSTGRES_USER')
-POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-POSTGRES_DATABASE = os.getenv('POSTGRES_DATABASE')
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = pymysql.connect(
-    host=POSTGRES_HOST,
-    user=POSTGRES_USER, password=POSTGRES_PASSWORD,
-    db=POSTGRES_DATABASE)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('POSTGRES_URL')
 db = SQLAlchemy(app)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
