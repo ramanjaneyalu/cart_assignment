@@ -1,12 +1,12 @@
 # Flask Shopping Cart APIs
 
-This repository contains three Flask APIs for managing a shopping cart:
+This repository houses three Flask APIs designed to manage a shopping cart effectively:
 
-1. **Create Shopping Cart** API: Create a new shopping cart and add items to it.
+1. **Create Shopping Cart API:** Create a new shopping cart and add items to it.
 
-2. **Edit Shopping Cart** API: Edit an existing shopping cart by adding, updating, or removing items.
+2. **Edit Shopping Cart API:** Edit an existing shopping cart by adding, updating, or removing items.
 
-3. **Summary** API: View a summary of the items in the shopping cart.
+3. **Summary API:** Obtain a summary of the items within the shopping cart.
 
 ## API Endpoints
 
@@ -14,7 +14,7 @@ This repository contains three Flask APIs for managing a shopping cart:
 
 - **Endpoint:** `/cart`
 - **HTTP Method:** POST
-- **Description:** Create a new shopping cart and add items to it. Redirects to the summary page.
+- **Description:** Create a new shopping cart and populate it with items. After successful creation, it redirects to the summary page.
 - **Request Body:** JSON
 - **Example Request:**
   ```json
@@ -30,24 +30,16 @@ This repository contains three Flask APIs for managing a shopping cart:
       }
     ]
   }
-
-### Edit Shopping Cart API
-
-**Step 2: Edit Shopping Cart**
+  
+### Edit Shopping Cart
 
 - **Endpoint:** `/cart/<int:cart_id>`
-- **HTTP Method:** GET (Render the edit form), POST (Submit edited cart data)
-- **Description:** Edit an existing shopping cart by adding, updating, or removing items. Redirects to the summary page.
+- **HTTP Method:** GET (To render the edit form), POST (To submit edited cart data)
+- **Description:** Edit an existing shopping cart by adding, updating, or removing items. After editing, it redirects to the summary page.
 - **Request Body:** Form data
-
-**Example Request (GET):**
-
-- Render the edit form.
-
-**Example Request (POST):**
-
-```json
-{
+- **Example Request:**
+  ```json
+  {
   "items": [
     {
       "item": "Updated Product 1",
@@ -60,24 +52,14 @@ This repository contains three Flask APIs for managing a shopping cart:
   ]
 }
 
-
-**Example Response:**
-
-- Redirect to summary page.
-
 ### Summary API
-
-**Step 3: View Summary**
 
 - **Endpoint:** `/summary/<int:cart_id>`
 - **HTTP Method:** GET
-- **Description:** View a summary of the items in the shopping cart, including the total price.
-
-**Example Response:**
-
-```markdown
-```json
-{
+- **Description:** Retrieve a summary of the items in the shopping cart, including the total price.
+- **Example Request:**
+  ```json
+  {
   "cart_id": 1,
   "total_price": 42.97,
   "items": [
