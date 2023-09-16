@@ -1,5 +1,7 @@
+import os
 import secrets
 
+import pymysql
 from flask import Flask, flash
 from flask import render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -8,9 +10,17 @@ from wtforms import StringField, DecimalField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__)
-# This will be temp db, after every deployment data will be lost.
-# since nothing is of importance just using it this way.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cart.db'
+
+POSTGRES_HOST = os.getenv('POSTGRES_HOST')
+POSTGRES_USER = os.getenv('POSTGRES_USER')
+POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+POSTGRES_DATABASE = os.getenv('POSTGRES_DATABASE')
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = pymysql.connect(
+    host=POSTGRES_HOST,
+    user=POSTGRES_USER, password=POSTGRES_PASSWORD,
+    db=POSTGRES_DATABASE)
 db = SQLAlchemy(app)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
