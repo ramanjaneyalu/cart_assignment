@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Calculator</title>
+</head>
+<body>
+    <h1>Item Calculator</h1>
+
+    <form id="item-form">
+        <input type="text" id="item-name" placeholder="Item Name">
+        <input type="number" id="item-price" placeholder="Item Price">
+        <button type="button" id="save-button">Save</button>
+    </form>
+
+    <h2>Total: <span id="total">0.00</span></h2>
+
+    <button type="button" id="edit-button">Edit Items</button>
+
+    <ul id="item-list">
+        {% for item in items %}
+        <li>{{ item.name }} - ${{ item.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#save-button').click(function() {
+                var name = $('#item-name').val();
+                var price = $('#item-price').val();
+
+                $.post('/add_item', { name: name, price: price }, function(response) {
+                    if (response.success) {
+                        $('#item-list').append('<li>' + name + ' - $' + price + '</li>');
+                        $('#item-name').val('');
+                        $('#item-price').val('');
+                        calculateTotal();
+                    }
+                });
+            });
+
+            $('#edit-button').click(function() {
+                // Implement edit functionality here
+            });
+
+            function calculateTotal() {
+                var total = 0;
+                $('#item-list li').each(function() {
+                    var price = parseFloat($(this).text().split('-')[1].trim());
+                    total += price;
+                });
+                $('#total').text(total.toFixed(2));
+            }
+        });
+    </script>
+</body>
+</html>

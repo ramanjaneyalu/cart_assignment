@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Cart</title>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square {
+            width: 150px;
+            height: 150px;
+            background-color: blue;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .add-button:hover {
+            background-color: #FF8C00; /* Darker shade on hover */
+        }
+        .add-button {
+            background-color: #FFA500; /* Yellow-orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .save-button:hover {
+            background-color: #FF8C00; /* Darker shade on hover */
+        }
+        .save-button {
+            background-color: #FFA500; /* Yellow-orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <form method="POST">
+            <table class="square" id="cart-table">
+                <tr>
+                    <th>Item</th>
+                    <th>Price(&pound;)</th>
+                    <th>Action</th>
+                </tr>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td><input type="text" name="item_{{ loop.index0 }}" value="{{ cart_item.item }}" required></td>
+                    <td><input type="number" name="price_{{ loop.index0 }}" step="0.01" value="{{ cart_item.price }}" required></td>
+                    <td>
+                        <button type="button" class="delete-button" onclick="removeRow(this)">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {{ form.hidden_tag() }}
+            </table>
+            <button type="button" class="add-button" onclick="addRow()">Add Row</button>
+            <input type="submit" class="save-button" value="Save">
+        </form>
+    </div>
+
+    <script>
+        function addRow() {
+            var table = document.getElementById('cart-table');
+            var newRow = table.insertRow(-1);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+
+            cell1.innerHTML = '<input type="text" name="item_new[]" required>';
+            cell2.innerHTML = '<input type="number" name="price_new[]" step="0.01" required>';
+            cell3.innerHTML = '<button type="button" class="delete-button" onclick="removeRow(this)">Delete</button>';
+        }
+
+        function removeRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+
+            // Decrease the square height when removing rows
+            var square = document.querySelector('.square');
+            square.style.height = (square.offsetHeight - 60) + 'px';
+        }
+    </script>
+</body>
+</html>

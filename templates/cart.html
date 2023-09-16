@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square {
+            width: 300px; /* Adjust the initial size as needed */
+            background-color: blue;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1, p {
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        table th, table td {
+            padding: 10px;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between; /* Ensure buttons are side by side */
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button-row button {
+            background-color: #FFA500; /* Yellow-orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px; /* Add margin to separate buttons */
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button-row-button:hover {
+            background-color: #FF8C00; /* Darker shade on hover */
+        }
+        .button-row-button {
+            background-color: #FFA500; /* Yellow-orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+            <form method="POST">
+                <table class="square" id="cart-table">
+                    <tr>
+                        <th>Items</th>
+                        <th>Price(&pound;)</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="item" required></td>
+                        <td><input type="number" name="price" step="0.01" required></td>
+                        <td><button type="button" class="delete-button" onclick="removeRow(this)">Delete</button></td>
+                    </tr>
+                    {% for cart_item in cart_items %}
+                    <tr>
+                        <td><input type="text" name="item" value="{{ cart_item.item }}" required></td>
+                        <td><input type="number" name="price" step="0.01" value="{{ cart_item.price }}" required></td>
+                        <td><button type="button" class="delete-button" onclick="removeRow(this)">Delete</button></td>
+                    </tr>
+                    {% endfor %}
+                    {{ form.hidden_tag() }}
+                </table>
+                <button type="button" class="button-row-button" onclick="addRow()">Add Row</button>
+                <input type="submit" value="Save" class="button-row-button">
+            </form>
+        </div>
+
+    <script>
+        function addRow() {
+            var table = document.querySelector('table');
+            var newRow = table.insertRow(-1);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            cell1.innerHTML = '<input type="text" name="item" required>';
+            cell2.innerHTML = '<input type="number" name="price" step="0.01" required>';
+            cell3.innerHTML = '<button type="button" class="delete-button" onclick="removeRow(this)">Delete</button>';
+
+            // Increase the square height when adding rows
+            var square = document.querySelector('.square');
+            square.style.height = (square.offsetHeight + 60) + 'px';
+        }
+
+        function removeRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+
+            // Decrease the square height when removing rows
+            var square = document.querySelector('.square');
+            square.style.height = (square.offsetHeight - 60) + 'px';
+        }
+    </script>
+</body>
+</html>

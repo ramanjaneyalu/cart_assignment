@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Summary</title>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square {
+            width: 300px; /* Double the size */
+            height: 300px; /* Double the size */
+            background-color: blue;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+        }
+
+        h1, p {
+            color: white;
+        }
+
+        .square.p{
+         align: center;
+        }
+
+        .total-field {
+            background-color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 18px;
+            color: black;
+        }
+
+        .back-button {
+            background-color: #FFA500; /* Yellow-orange color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            bottom: 20px; /* Adjust the bottom position */
+            right: 20px; /* Adjust the right position */
+        }
+
+        .back-button:hover {
+            background-color: #FF8C00; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="square">
+            <p class="total-field">Total Cost: &pound;{{ total_price }}</p>
+            <button class="back-button" onclick="window.location.href='{{ url_for('edit_cart', cart_id=cart_id) }}'">Back to Cart</button>
+        </div>
+    </div>
+</body>
+</html>
